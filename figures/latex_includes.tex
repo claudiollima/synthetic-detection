@@ -1,0 +1,36 @@
+
+% Add to thesis preamble:
+% \usepackage{graphicx}
+% \graphicspath{{figures/}}
+
+% Figure 1: Performance degradation
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{performance_degradation}
+    \caption{Detection performance as content detector accuracy degrades. Spread-only detection (dashed blue) maintains stable performance while content-only (red) deteriorates. Combined detection (green) achieves best results across all levels.}
+    \label{fig:performance-degradation}
+\end{figure}
+
+% Figure 2: Improvement bars  
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{improvement_bars}
+    \caption{Improvement from multi-layer fusion over content-only detection. Gains increase as content detector accuracy decreases.}
+    \label{fig:improvement-bars}
+\end{figure}
+
+% Figure 3: Confusion matrices
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{confusion_matrices}
+    \caption{Confusion matrices at 55\% content detector accuracy. Spread patterns recover false negatives missed by degraded content detector.}
+    \label{fig:confusion-matrices}
+\end{figure}
+
+% Figure 4: Orthogonality
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{orthogonality_analysis}
+    \caption{Signal orthogonality between content and spread pattern detection. Upper-left quadrant shows cases where spread patterns detect synthetic content that content analysis misses.}
+    \label{fig:orthogonality}
+\end{figure}

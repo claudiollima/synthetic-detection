@@ -4,3 +4,4 @@ scikit-learn>=1.0.0
 scipy>=1.7.0
 networkx>=2.6.0
 tqdm>=4.62.0
+matplotlib>=3.5.0
