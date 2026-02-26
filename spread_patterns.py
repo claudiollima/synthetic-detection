@@ -12,8 +12,23 @@ Key insight from literature:
 - Spread patterns encode coordination and authenticity (Kramer et al. - Superspreaders paper)
 - Small accounts drive AI misinfo spread (Pröllochs et al. - flips conventional wisdom)
 
+THEORETICAL FOUNDATION (Added 2026-02-23):
+Features are organized around three universal mechanisms from Murugan et al. (2511.18733):
+
+1. GROUPTHINK BLENDING (𝒢): Dense community coupling drives fidelity to group mean
+   → Detected via: cascade_depth, structural_virality, direct_reshare_fraction
+   
+2. BRIDGE-NODE BOTTLENECKS (ℬ): Cross-community flow causes irreversible dilution  
+   → Detected via: cross_platform_spread, time_to_first_share, inter_share timing
+   
+3. FIDELITY LANDSCAPE (ℱ): Competition between injection and degradation
+   → Detected via: account_age, verified_fraction, follower ratios
+
+These mechanisms impose structural constraints that differ between organic and
+coordinated spread, making features robust to content-level generator improvements.
+
 Author: Claudio L. Lima
-Date: 2026-02-17
+Date: 2026-02-17 (theoretical foundation added 2026-02-23)
 """
 
 import numpy as np
@@ -103,9 +118,15 @@ class SpreadPatternExtractor:
         """
         Temporal dynamics of the spread.
         
+        THEORETICAL BASIS (Murugan et al. 2511.18733):
+        Maps to BRIDGE-NODE BOTTLENECK mechanism (ℬ):
+        - Organic content has temporal gaps from bridge traversal between communities
+        - Coordinated content bypasses bridges via simultaneous multi-point injection
+        - Inter-share timing distributions differ: log-normal (organic) vs exponential (coordinated)
+        
         Key hypothesis: Coordinated/synthetic content may show:
         - Faster initial spread (seeded across network)
-        - More regular timing (bot-like)
+        - More regular timing (bot-like) - lacks natural bridge delays
         - Different time-of-day patterns
         """
         features = {}
@@ -176,6 +197,13 @@ class SpreadPatternExtractor:
         """
         Structural features of the cascade tree.
         
+        THEORETICAL BASIS (Murugan et al. 2511.18733):
+        Maps to GROUPTHINK BLENDING mechanism (𝒢):
+        - Dense community coupling creates deep cascade penetration in organic spread
+        - Homogenization toward group mean takes time → organic spread shows depth
+        - Coordinated campaigns use flat broadcast patterns to maximize immediate reach
+        - Structural virality captures chain-like (organic) vs broadcast-like (coordinated) topology
+        
         Key hypothesis: Organic content spreads through natural social networks (deep trees),
         while coordinated campaigns may show flat, wide patterns (many independent seeders).
         """
@@ -222,6 +250,13 @@ class SpreadPatternExtractor:
     def _account_features(self, shares: List[ShareEvent]) -> Dict[str, float]:
         """
         Characteristics of accounts sharing the content.
+        
+        THEORETICAL BASIS (Murugan et al. 2511.18733):
+        Maps to FIDELITY LANDSCAPE mechanism (ℱ):
+        - Authentic information has credible injection sources (established accounts)
+        - Re-injection requires authority (verified, high-follower accounts)
+        - Coordinated campaigns lack natural source authority
+        - Account age clustering reveals accounts created for specific campaigns
         
         Key findings from literature:
         - Small accounts drive AI misinfo spread (Pröllochs et al.)
@@ -290,6 +325,18 @@ class SpreadPatternExtractor:
                                shares: List[ShareEvent]) -> Dict[str, float]:
         """
         Signals of coordinated vs organic spread.
+        
+        THEORETICAL BASIS (Murugan et al. 2511.18733):
+        Integrates ALL THREE mechanisms for coordination detection:
+        - ℬ (Bottleneck): Cross-platform spread bypasses natural bridges
+        - 𝒢 (Groupthink): Temporal clustering violates natural community pacing
+        - ℱ (Fidelity): Account age clustering reveals artificial injection sources
+        
+        Multi-mechanism evasion requires:
+        - Building deep community relationships (expensive, slow)
+        - Coordinating sequential spread (operationally complex)
+        - Using established accounts (scarce resource)
+        → Multiplicative evasion costs make detection robust
         
         Key hypothesis: Coordinated campaigns show:
         - Temporal clustering (many accounts share in short bursts)
