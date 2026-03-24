@@ -34,3 +34,27 @@
     \caption{Signal orthogonality between content and spread pattern detection. Upper-left quadrant shows cases where spread patterns detect synthetic content that content analysis misses.}
     \label{fig:orthogonality}
 \end{figure}
+
+% Figure 5: Statistical Significance
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{statistical_significance}
+    \caption{Statistical significance of fusion improvements. Left: t-statistics for combined vs content-only comparison (green bars exceed significance threshold). Right: Effect size in percentage points, showing improvements increase as content detector degrades.}
+    \label{fig:statistical-significance}
+\end{figure}
+
+% Figure 6: Fusion Weight Analysis
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{fusion_weight_analysis}
+    \caption{Performance comparison across different fusion weights with 95\% confidence intervals. Lower content weights (more reliance on spread patterns) outperform when content detector accuracy degrades.}
+    \label{fig:fusion-weights}
+\end{figure}
+
+% Figure 7: Confidence Intervals
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{confidence_intervals}
+    \caption{Detection F1 scores with 95\% bootstrap confidence intervals. The shaded region indicates where spread-only detection outperforms content-only. Combined detection maintains robust performance across all conditions.}
+    \label{fig:confidence-intervals}
+\end{figure}

@@ -287,6 +287,211 @@ class ResultsVisualizer:
         
         return fig
 
+    def plot_statistical_significance(self, save: bool = True) -> plt.Figure:
+        """
+        Figure 5: Statistical significance of improvements with t-statistics.
+        Shows the strength of evidence that fusion beats content-only.
+        """
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+        
+        results_by_acc = self.results['by_content_accuracy']
+        accuracies = sorted(results_by_acc.keys(), key=float, reverse=True)
+        
+        x_labels = [f"{int(float(a)*100)}%" for a in accuracies]
+        x_pos = np.arange(len(x_labels))
+        
+        # Extract t-statistics and deltas for combined_0.3 (best fusion weight)
+        t_stats = []
+        delta_f1s = []
+        for acc in accuracies:
+            data = results_by_acc[acc]
+            comparison = data.get('combined_0.3_vs_content', {})
+            t_stat = comparison.get('t_statistic', 0)
+            # Handle infinity values
+            if t_stat == float('inf') or t_stat == float('-inf'):
+                t_stat = 15  # Cap for visualization
+            t_stats.append(t_stat)
+            delta_f1s.append(comparison.get('delta_f1', 0) * 100)  # Convert to percentage points
+        
+        # Plot 1: T-statistics
+        colors = ['#27AE60' if t > 2.0 else '#F39C12' for t in t_stats]
+        bars = ax1.bar(x_pos, t_stats, color=colors, edgecolor='black', linewidth=1)
+        ax1.axhline(y=2.0, color='red', linestyle='--', linewidth=2, label='Significance threshold (t=2)')
+        ax1.set_xlabel('Content Detector Accuracy')
+        ax1.set_ylabel('t-statistic')
+        ax1.set_title('Statistical Significance of Fusion Improvement')
+        ax1.set_xticks(x_pos)
+        ax1.set_xticklabels(x_labels)
+        ax1.legend()
+        ax1.grid(True, alpha=0.3, axis='y')
+        
+        # Add value labels
+        for bar, t in zip(bars, t_stats):
+            height = bar.get_height()
+            label = f'{t:.1f}' if t < 15 else '∞'
+            ax1.annotate(label, xy=(bar.get_x() + bar.get_width()/2, height),
+                        xytext=(0, 3), textcoords="offset points",
+                        ha='center', va='bottom', fontsize=9, fontweight='bold')
+        
+        # Plot 2: Effect size (delta F1)
+        bars2 = ax2.bar(x_pos, delta_f1s, color='#3498DB', edgecolor='black', linewidth=1)
+        ax2.set_xlabel('Content Detector Accuracy')
+        ax2.set_ylabel('F1 Improvement (percentage points)')
+        ax2.set_title('Effect Size: Fusion vs Content-Only')
+        ax2.set_xticks(x_pos)
+        ax2.set_xticklabels(x_labels)
+        ax2.grid(True, alpha=0.3, axis='y')
+        
+        for bar, delta in zip(bars2, delta_f1s):
+            height = bar.get_height()
+            ax2.annotate(f'+{delta:.1f}pp', xy=(bar.get_x() + bar.get_width()/2, height),
+                        xytext=(0, 3), textcoords="offset points",
+                        ha='center', va='bottom', fontsize=9)
+        
+        plt.tight_layout()
+        
+        if save:
+            fig.savefig(self.output_dir / 'statistical_significance.png')
+            fig.savefig(self.output_dir / 'statistical_significance.pdf')
+            print(f"Saved: {self.output_dir / 'statistical_significance.png'}")
+        
+        return fig
+
+    def plot_fusion_weight_analysis(self, save: bool = True) -> plt.Figure:
+        """
+        Figure 6: Analysis of different fusion weights across accuracy levels.
+        Shows which content weight works best in different scenarios.
+        """
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+        
+        results_by_acc = self.results['by_content_accuracy']
+        accuracies = sorted(results_by_acc.keys(), key=float, reverse=True)
+        
+        x_labels = [f"{int(float(a)*100)}%" for a in accuracies]
+        x_pos = np.arange(len(x_labels))
+        
+        fusion_weights = ['0.3', '0.5', '0.7']
+        colors = ['#E74C3C', '#F39C12', '#27AE60']
+        markers = ['o', 's', '^']
+        
+        # Extract F1 and AUC for each fusion weight
+        for i, weight in enumerate(fusion_weights):
+            f1_means = []
+            auc_means = []
+            f1_cis = []
+            auc_cis = []
+            
+            for acc in accuracies:
+                data = results_by_acc[acc]
+                combined_key = f'combined_{weight}'
+                f1_data = data[combined_key]['f1']
+                auc_data = data[combined_key]['auc']
+                
+                f1_means.append(f1_data['mean'])
+                auc_means.append(auc_data['mean'])
+                f1_cis.append([f1_data['mean'] - f1_data['ci_low'], f1_data['ci_high'] - f1_data['mean']])
+                auc_cis.append([auc_data['mean'] - auc_data['ci_low'], auc_data['ci_high'] - auc_data['mean']])
+            
+            f1_errors = np.array(f1_cis).T
+            auc_errors = np.array(auc_cis).T
+            
+            label = f'Content Weight = {weight}'
+            ax1.errorbar(x_pos, f1_means, yerr=f1_errors, fmt=f'{markers[i]}-',
+                        color=colors[i], label=label, linewidth=2, markersize=8,
+                        capsize=4, capthick=2)
+            ax2.errorbar(x_pos, auc_means, yerr=auc_errors, fmt=f'{markers[i]}-',
+                        color=colors[i], label=label, linewidth=2, markersize=8,
+                        capsize=4, capthick=2)
+        
+        # Configure axes
+        for ax, metric, ylim in [(ax1, 'F1 Score', (0.7, 1.02)), (ax2, 'AUC-ROC', (0.8, 1.02))]:
+            ax.set_xlabel('Content Detector Accuracy')
+            ax.set_ylabel(metric)
+            ax.set_title(f'{metric} by Fusion Weight')
+            ax.set_xticks(x_pos)
+            ax.set_xticklabels(x_labels)
+            ax.legend(loc='lower left')
+            ax.set_ylim(ylim)
+            ax.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        
+        if save:
+            fig.savefig(self.output_dir / 'fusion_weight_analysis.png')
+            fig.savefig(self.output_dir / 'fusion_weight_analysis.pdf')
+            print(f"Saved: {self.output_dir / 'fusion_weight_analysis.png'}")
+        
+        return fig
+
+    def plot_confidence_intervals(self, save: bool = True) -> plt.Figure:
+        """
+        Figure 7: Performance comparison with proper confidence intervals.
+        Publication-quality version of the degradation plot.
+        """
+        fig, ax = plt.subplots(figsize=(10, 7))
+        
+        results_by_acc = self.results['by_content_accuracy']
+        accuracies = sorted(results_by_acc.keys(), key=float, reverse=True)
+        
+        x_labels = [f"{int(float(a)*100)}%" for a in accuracies]
+        x_pos = np.arange(len(x_labels))
+        
+        # Extract data for each method
+        methods = {
+            'Content-Only': ('content_only', '#E74C3C', 'o'),
+            'Spread-Only': ('spread_only', '#3498DB', 's'),
+            'Combined (w=0.3)': ('combined_0.3', '#27AE60', '^'),
+        }
+        
+        for method_name, (key, color, marker) in methods.items():
+            f1_means = []
+            f1_cis = []
+            
+            for acc in accuracies:
+                data = results_by_acc[acc]
+                f1_data = data[key]['f1']
+                f1_means.append(f1_data['mean'])
+                f1_cis.append([f1_data['mean'] - f1_data['ci_low'], f1_data['ci_high'] - f1_data['mean']])
+            
+            f1_errors = np.array(f1_cis).T
+            
+            ax.errorbar(x_pos, f1_means, yerr=f1_errors, fmt=f'{marker}-',
+                       color=color, label=method_name, linewidth=2.5, markersize=10,
+                       capsize=5, capthick=2, elinewidth=2)
+        
+        # Highlight the "spread beats content" crossover
+        spread_f1 = results_by_acc['0.95']['spread_only']['f1']['mean']
+        ax.axhline(y=spread_f1, color='#3498DB', linestyle=':', alpha=0.5, linewidth=1.5)
+        
+        # Add shaded region where spread outperforms content
+        content_f1s = [results_by_acc[acc]['content_only']['f1']['mean'] for acc in accuracies]
+        crossover_idx = next((i for i, f1 in enumerate(content_f1s) if f1 < spread_f1), len(accuracies))
+        if crossover_idx < len(accuracies):
+            ax.axvspan(crossover_idx - 0.5, len(accuracies) - 0.5, alpha=0.1, color='#3498DB',
+                      label='Spread > Content region')
+        
+        ax.set_xlabel('Content Detector Accuracy', fontsize=12)
+        ax.set_ylabel('F1 Score', fontsize=12)
+        ax.set_title('Detection Performance with 95% Confidence Intervals', fontsize=14)
+        ax.set_xticks(x_pos)
+        ax.set_xticklabels(x_labels)
+        ax.legend(loc='lower left', fontsize=10)
+        ax.set_ylim(0.65, 1.05)
+        ax.grid(True, alpha=0.3)
+        
+        # Add annotation
+        ax.annotate('Content detector degrades →', xy=(0.95, 0.02), xycoords='axes fraction',
+                   fontsize=10, color='gray', ha='right')
+        
+        plt.tight_layout()
+        
+        if save:
+            fig.savefig(self.output_dir / 'confidence_intervals.png')
+            fig.savefig(self.output_dir / 'confidence_intervals.pdf')
+            print(f"Saved: {self.output_dir / 'confidence_intervals.png'}")
+        
+        return fig
+
     def generate_all_figures(self):
         """Generate all thesis figures."""
         print("Generating thesis figures...")
@@ -296,7 +501,9 @@ class ResultsVisualizer:
         self.plot_improvement_bars()
         self.plot_confusion_matrices()
         self.plot_orthogonality_analysis()
-        # self.plot_key_metrics_summary() # Disabled: Data not available in this JSON
+        self.plot_statistical_significance()
+        self.plot_fusion_weight_analysis()
+        self.plot_confidence_intervals()
         
         print("=" * 50)
         print(f"All figures saved to: {self.output_dir.absolute()}")
