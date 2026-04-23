@@ -1,0 +1,424 @@
+{
+  "config": {
+    "n_samples": 500,
+    "n_folds": 5,
+    "seed": 42,
+    "window_hours": 48,
+    "noise_std": 2.0,
+    "categories": {
+      "temporal": [
+        "time_to_first_share_seconds",
+        "total_shares",
+        "shares_per_hour",
+        "mean_inter_share_seconds",
+        "std_inter_share_seconds",
+        "inter_share_cv",
+        "burstiness",
+        "peak_hour"
+      ],
+      "cascade": [
+        "cascade_depth",
+        "cascade_breadth",
+        "depth_to_breadth_ratio",
+        "structural_virality",
+        "direct_reshare_fraction",
+        "deep_share_fraction"
+      ],
+      "account": [
+        "mean_account_age_days",
+        "std_account_age_days",
+        "new_account_fraction",
+        "mean_follower_count",
+        "std_follower_count",
+        "small_account_fraction",
+        "mean_following_count",
+        "verified_fraction",
+        "mean_follower_following_ratio"
+      ],
+      "coordination": [
+        "temporal_clustering_score",
+        "account_age_clustering"
+      ]
+    }
+  },
+  "rows": [
+    {
+      "categories": [
+        "temporal"
+      ],
+      "n_features": 6,
+      "auc_mean": 0.7987200000000001,
+      "auc_std": 0.03284621134925607,
+      "f1_mean": 0.7139045650752974,
+      "f1_std": 0.033838791194718214,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "temporal"
+      ],
+      "n_features": 6,
+      "auc_mean": 0.8416799999999999,
+      "auc_std": 0.020302354543254336,
+      "f1_mean": 0.7750310908112709,
+      "f1_std": 0.029748555339345107,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "cascade"
+      ],
+      "n_features": 3,
+      "auc_mean": 0.7763199999999999,
+      "auc_std": 0.026538605841302233,
+      "f1_mean": 0.7196976903969136,
+      "f1_std": 0.010217166691176099,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "cascade"
+      ],
+      "n_features": 3,
+      "auc_mean": 0.8276,
+      "auc_std": 0.04169681042957598,
+      "f1_mean": 0.7558882282254162,
+      "f1_std": 0.02731897690764765,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "account"
+      ],
+      "n_features": 5,
+      "auc_mean": 0.8108000000000001,
+      "auc_std": 0.017968861956172928,
+      "f1_mean": 0.715880821556989,
+      "f1_std": 0.020152298546861878,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "account"
+      ],
+      "n_features": 5,
+      "auc_mean": 0.8392,
+      "auc_std": 0.02302138136602578,
+      "f1_mean": 0.7468474004637379,
+      "f1_std": 0.04344155786314242,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "coordination"
+      ],
+      "n_features": 1,
+      "auc_mean": 0.66172,
+      "auc_std": 0.05910216239698852,
+      "f1_mean": 0.6037812610445658,
+      "f1_std": 0.07882374756420098,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "coordination"
+      ],
+      "n_features": 1,
+      "auc_mean": 0.73432,
+      "auc_std": 0.03972497451226368,
+      "f1_mean": 0.6731758035851934,
+      "f1_std": 0.04774878783177882,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "temporal",
+        "cascade"
+      ],
+      "n_features": 9,
+      "auc_mean": 0.86488,
+      "auc_std": 0.014255721658337732,
+      "f1_mean": 0.7872508361204013,
+      "f1_std": 0.025205051850024605,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "temporal",
+        "cascade"
+      ],
+      "n_features": 9,
+      "auc_mean": 0.9141599999999999,
+      "auc_std": 0.018890166754160734,
+      "f1_mean": 0.8410993331701064,
+      "f1_std": 0.024089001350266794,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "temporal",
+        "account"
+      ],
+      "n_features": 11,
+      "auc_mean": 0.89008,
+      "auc_std": 0.0339481015669507,
+      "f1_mean": 0.7898478253127547,
+      "f1_std": 0.025250435182745442,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "temporal",
+        "account"
+      ],
+      "n_features": 11,
+      "auc_mean": 0.9248,
+      "auc_std": 0.015977984854167317,
+      "f1_mean": 0.8425668628171478,
+      "f1_std": 0.030323815354243194,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "temporal",
+        "coordination"
+      ],
+      "n_features": 7,
+      "auc_mean": 0.8260799999999999,
+      "auc_std": 0.018076105775304576,
+      "f1_mean": 0.7279515619362502,
+      "f1_std": 0.017968084269684992,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "temporal",
+        "coordination"
+      ],
+      "n_features": 7,
+      "auc_mean": 0.8800799999999999,
+      "auc_std": 0.01906183621795132,
+      "f1_mean": 0.792643499674042,
+      "f1_std": 0.028683219508001893,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "cascade",
+        "account"
+      ],
+      "n_features": 8,
+      "auc_mean": 0.86928,
+      "auc_std": 0.028419035873864525,
+      "f1_mean": 0.7953440480241618,
+      "f1_std": 0.0315460832585866,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "cascade",
+        "account"
+      ],
+      "n_features": 8,
+      "auc_mean": 0.9166399999999999,
+      "auc_std": 0.01522650320986403,
+      "f1_mean": 0.8342361210959341,
+      "f1_std": 0.020085844794336883,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "cascade",
+        "coordination"
+      ],
+      "n_features": 4,
+      "auc_mean": 0.8118399999999999,
+      "auc_std": 0.03313159217423754,
+      "f1_mean": 0.743664015921454,
+      "f1_std": 0.03157217690789978,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "cascade",
+        "coordination"
+      ],
+      "n_features": 4,
+      "auc_mean": 0.85624,
+      "auc_std": 0.031400993614852366,
+      "f1_mean": 0.7809535591857057,
+      "f1_std": 0.018905452598676174,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "account",
+        "coordination"
+      ],
+      "n_features": 6,
+      "auc_mean": 0.8569599999999999,
+      "auc_std": 0.021817570900537923,
+      "f1_mean": 0.7686887088482094,
+      "f1_std": 0.04304505006976616,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "account",
+        "coordination"
+      ],
+      "n_features": 6,
+      "auc_mean": 0.89232,
+      "auc_std": 0.016524212537969853,
+      "f1_mean": 0.8013428047599401,
+      "f1_std": 0.036112875154909754,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "temporal",
+        "cascade",
+        "account"
+      ],
+      "n_features": 14,
+      "auc_mean": 0.9090400000000001,
+      "auc_std": 0.011556054690074851,
+      "f1_mean": 0.8377767697922639,
+      "f1_std": 0.031122575076944332,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "temporal",
+        "cascade",
+        "account"
+      ],
+      "n_features": 14,
+      "auc_mean": 0.9560000000000001,
+      "auc_std": 0.012114123988138797,
+      "f1_mean": 0.8834698555003611,
+      "f1_std": 0.006177650055105462,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "temporal",
+        "cascade",
+        "coordination"
+      ],
+      "n_features": 10,
+      "auc_mean": 0.87736,
+      "auc_std": 0.019833870020749857,
+      "f1_mean": 0.7784836501171102,
+      "f1_std": 0.03251887337066997,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "temporal",
+        "cascade",
+        "coordination"
+      ],
+      "n_features": 10,
+      "auc_mean": 0.9238399999999999,
+      "auc_std": 0.007754637322273703,
+      "f1_mean": 0.8292928196516207,
+      "f1_std": 0.006719590994764287,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "temporal",
+        "account",
+        "coordination"
+      ],
+      "n_features": 12,
+      "auc_mean": 0.9170400000000001,
+      "auc_std": 0.018329604469273217,
+      "f1_mean": 0.821506932705025,
+      "f1_std": 0.03252989633609097,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "temporal",
+        "account",
+        "coordination"
+      ],
+      "n_features": 12,
+      "auc_mean": 0.9468799999999999,
+      "auc_std": 0.014152088185140747,
+      "f1_mean": 0.8685789907024372,
+      "f1_std": 0.039376438929018445,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "cascade",
+        "account",
+        "coordination"
+      ],
+      "n_features": 9,
+      "auc_mean": 0.9024000000000001,
+      "auc_std": 0.013635248439247502,
+      "f1_mean": 0.8231215437631363,
+      "f1_std": 0.017397653882414106,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "cascade",
+        "account",
+        "coordination"
+      ],
+      "n_features": 9,
+      "auc_mean": 0.93632,
+      "auc_std": 0.013298781899106412,
+      "f1_mean": 0.8620194337990311,
+      "f1_std": 0.019587391814399446,
+      "classifier": "LogisticRegression"
+    },
+    {
+      "categories": [
+        "temporal",
+        "cascade",
+        "account",
+        "coordination"
+      ],
+      "n_features": 15,
+      "auc_mean": 0.9270400000000001,
+      "auc_std": 0.007787579855128297,
+      "f1_mean": 0.8320357648581946,
+      "f1_std": 0.029910318157188306,
+      "classifier": "GradientBoosting"
+    },
+    {
+      "categories": [
+        "temporal",
+        "cascade",
+        "account",
+        "coordination"
+      ],
+      "n_features": 15,
+      "auc_mean": 0.96624,
+      "auc_std": 0.008442179813294641,
+      "f1_mean": 0.893194483529671,
+      "f1_std": 0.004789757789324899,
+      "classifier": "LogisticRegression"
+    }
+  ],
+  "leave_one_out_deltas": {
+    "GradientBoosting": {
+      "coordination": 0.018000000000000016,
+      "cascade": 0.010000000000000009,
+      "account": 0.04968000000000006,
+      "temporal": 0.024639999999999995
+    },
+    "LogisticRegression": {
+      "coordination": 0.010239999999999916,
+      "cascade": 0.019360000000000044,
+      "account": 0.042400000000000104,
+      "temporal": 0.029919999999999947
+    }
+  }
+}
