@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Test suite under `tests/` (pytest)
+  - `test_spread_patterns.py`: feature schema stability, empty-cascade handling,
+    observation-window filtering, and share ordering invariants
+  - `test_classifier.py`: confidence bounds, synthetic/organic separation,
+    and multi-layer fusion behaviour
+
 ### Planned
 - Integration with real-time social media APIs
 - Pre-trained model weights for spread pattern features
