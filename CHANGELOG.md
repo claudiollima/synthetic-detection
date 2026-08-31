@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Adaptive (confidence-weighted) late fusion in `MultiLayerDetector`
+  - New `fusion="adaptive"` mode weights each layer by its decisional
+    certainty (distance of its score from 0.5), so an uncertain content
+    detector defers to the spread signal and vice versa — operationalising
+    the thesis claim that spread patterns carry the decision when content
+    detection fails. Default remains `fusion="fixed"` (static weights).
+  - `predict()` now reports the effective `content_weight`/`spread_weight`
+    and the active `fusion` mode for transparency.
 - Test suite under `tests/` (pytest)
   - `test_spread_patterns.py`: feature schema stability, empty-cascade handling,
     observation-window filtering, and share ordering invariants

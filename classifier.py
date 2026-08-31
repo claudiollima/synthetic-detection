@@ -155,10 +155,49 @@ class MultiLayerDetector:
     3. Fusion: combine signals with learned weights
     """
     
-    def __init__(self, content_detector_weight: float = 0.5):
+    def __init__(self,
+                 content_detector_weight: float = 0.5,
+                 fusion: str = "fixed"):
+        if fusion not in ("fixed", "adaptive"):
+            raise ValueError(
+                f"fusion must be 'fixed' or 'adaptive', got {fusion!r}"
+            )
         self.spread_classifier = SpreadPatternClassifier()
         self.content_weight = content_detector_weight
         self.spread_weight = 1.0 - content_detector_weight
+        self.fusion = fusion
+
+    @staticmethod
+    def _certainty(score: float) -> float:
+        """Decisional certainty of a probability: 0 at 0.5, 1 at 0/1.
+
+        A score near 0.5 means the layer is undecided; a score near 0 or 1
+        means it is confident. Used by adaptive fusion to let a confident
+        layer dominate an uncertain one.
+        """
+        return abs(score - 0.5) * 2.0
+
+    def _fusion_weights(self,
+                        content_score: float,
+                        spread_score: float) -> Tuple[float, float]:
+        """Return (content_weight, spread_weight) summing to 1.0.
+
+        In "fixed" mode these are the static weights set at construction.
+        In "adaptive" mode each layer is weighted by its decisional
+        certainty, so an uncertain content detector defers to the spread
+        signal (and vice versa) — the core thesis claim that spread
+        patterns provide a useful signal when content detection fails.
+        """
+        if self.fusion == "fixed":
+            return self.content_weight, self.spread_weight
+
+        c_cert = self._certainty(content_score) * self.content_weight
+        s_cert = self._certainty(spread_score) * self.spread_weight
+        total = c_cert + s_cert
+        if total == 0.0:
+            # Both layers maximally uncertain: fall back to static weights.
+            return self.content_weight, self.spread_weight
+        return c_cert / total, s_cert / total
     
     def predict(self, 
                 cascade: ContentCascade,
@@ -180,18 +219,23 @@ class MultiLayerDetector:
         
         # Combine layers
         if content_score is not None:
+            content_w, spread_w = self._fusion_weights(content_score, spread_score)
             combined_score = (
-                self.content_weight * content_score +
-                self.spread_weight * spread_score
+                content_w * content_score +
+                spread_w * spread_score
             )
         else:
+            content_w, spread_w = 0.0, 1.0
             combined_score = spread_score
-        
+
         return {
             'prediction': 'synthetic' if combined_score > 0.5 else 'organic',
             'combined_confidence': combined_score,
             'content_score': content_score,
             'spread_score': spread_score,
+            'fusion': self.fusion,
+            'content_weight': content_w,
+            'spread_weight': spread_w,
             'spread_explanation': self.spread_classifier.explain(spread_result),
         }
 

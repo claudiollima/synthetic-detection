@@ -79,3 +79,42 @@ def test_content_weight_extremes():
     out_spread = spread_only.predict(cascade, content_score=0.8)
     assert out_content["combined_confidence"] == pytest.approx(0.8)
     assert out_spread["combined_confidence"] == pytest.approx(out_spread["spread_score"])
+
+
+def test_invalid_fusion_mode_rejected():
+    """Unknown fusion modes should fail fast at construction."""
+    with pytest.raises(ValueError):
+        MultiLayerDetector(fusion="bayesian")
+
+
+def test_adaptive_fusion_reports_weights_summing_to_one():
+    """Adaptive fusion exposes the effective per-layer weights."""
+    detector = MultiLayerDetector(fusion="adaptive")
+    out = detector.predict(create_synthetic_cascade_example(), content_score=0.9)
+    assert out["fusion"] == "adaptive"
+    assert out["content_weight"] + out["spread_weight"] == pytest.approx(1.0)
+
+
+def test_adaptive_fusion_defers_to_confident_layer():
+    """An undecided content detector (~0.5) should barely move the result.
+
+    Under adaptive fusion the near-0.5 content score carries almost no
+    certainty, so the combined score should stay close to the spread score
+    -- this is the thesis claim that spread patterns carry the decision
+    when content detection is uncertain.
+    """
+    cascade = create_synthetic_cascade_example()
+    adaptive = MultiLayerDetector(fusion="adaptive")
+    fixed = MultiLayerDetector(content_detector_weight=0.5, fusion="fixed")
+
+    uncertain_content = 0.5
+    adaptive_out = adaptive.predict(cascade, content_score=uncertain_content)
+    fixed_out = fixed.predict(cascade, content_score=uncertain_content)
+
+    spread = adaptive_out["spread_score"]
+    # Adaptive stays nearer the (confident) spread score than fixed 50/50 blend.
+    assert abs(adaptive_out["combined_confidence"] - spread) <= abs(
+        fixed_out["combined_confidence"] - spread
+    )
+    # The confident spread layer earns the larger share of the weight.
+    assert adaptive_out["spread_weight"] > adaptive_out["content_weight"]
