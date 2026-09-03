@@ -1,0 +1,108 @@
+{
+  "config": {
+    "n_samples": 400,
+    "n_folds": 5,
+    "seed": 42,
+    "window_hours": 48,
+    "classifier": "GradientBoosting(n=200,depth=3,lr=0.05)"
+  },
+  "regimes": {
+    "burst_farm": {},
+    "sleeper_ring": {
+      "account_age_mean": 720,
+      "account_age_std": 120,
+      "time_to_first_share_mean": 900,
+      "inter_share_mean": 900,
+      "temporal_cluster_prob": 0.75,
+      "initial_burst_size": 6
+    },
+    "broadcast_amplifier": {
+      "follower_mean": 15000,
+      "follower_std": 8000,
+      "initial_burst_size": 12,
+      "depth_mean": 1,
+      "time_to_first_share_mean": 200,
+      "inter_share_mean": 400,
+      "temporal_cluster_prob": 0.6
+    },
+    "stealth_mimic": {
+      "time_to_first_share_mean": 3000,
+      "time_to_first_share_std": 1500,
+      "inter_share_mean": 6000,
+      "inter_share_regularity": 1.2,
+      "temporal_cluster_prob": 0.35,
+      "account_age_mean": 400,
+      "account_age_std": 250,
+      "initial_burst_size": 3,
+      "depth_mean": 3
+    }
+  },
+  "rows": [
+    {
+      "held_out": "burst_farm",
+      "within_auc": 1.0,
+      "within_auc_std": 0.0,
+      "within_f1": 1.0,
+      "transfer_auc": 1.0,
+      "transfer_f1": 0.9779951100244498,
+      "auc_gap": 0.0,
+      "train_regimes": [
+        "sleeper_ring",
+        "broadcast_amplifier",
+        "stealth_mimic"
+      ],
+      "n_test": 400
+    },
+    {
+      "held_out": "sleeper_ring",
+      "within_auc": 0.9998750000000001,
+      "within_auc_std": 0.0002499999999999947,
+      "within_f1": 0.9949992186279106,
+      "transfer_auc": 0.9996,
+      "transfer_f1": 0.9876543209876543,
+      "auc_gap": 0.0002750000000000252,
+      "train_regimes": [
+        "burst_farm",
+        "broadcast_amplifier",
+        "stealth_mimic"
+      ],
+      "n_test": 400
+    },
+    {
+      "held_out": "broadcast_amplifier",
+      "within_auc": 1.0,
+      "within_auc_std": 0.0,
+      "within_f1": 1.0,
+      "transfer_auc": 0.97895,
+      "transfer_f1": 0.947103274559194,
+      "auc_gap": 0.021050000000000013,
+      "train_regimes": [
+        "burst_farm",
+        "sleeper_ring",
+        "stealth_mimic"
+      ],
+      "n_test": 400
+    },
+    {
+      "held_out": "stealth_mimic",
+      "within_auc": 0.9897500000000001,
+      "within_auc_std": 0.004802343178074642,
+      "within_f1": 0.9407227241785915,
+      "transfer_auc": 0.821625,
+      "transfer_f1": 0.615916955017301,
+      "auc_gap": 0.16812500000000008,
+      "train_regimes": [
+        "burst_farm",
+        "sleeper_ring",
+        "broadcast_amplifier"
+      ],
+      "n_test": 400
+    }
+  ],
+  "summary": {
+    "mean_within_auc": 0.99740625,
+    "mean_transfer_auc": 0.9500437500000001,
+    "mean_auc_gap": 0.04736250000000003,
+    "worst_transfer_regime": "stealth_mimic"
+  }
+}
