@@ -1,0 +1,383 @@
+{
+  "config": {
+    "n_samples": 400,
+    "seed": 42,
+    "window_hours": 48,
+    "classifier": "GradientBoosting(n=200,depth=3,lr=0.05)"
+  },
+  "held_out": "stealth_mimic",
+  "features": [
+    {
+      "name": "temporal_clustering",
+      "category": "coordination",
+      "importance": 0.9416441763886113,
+      "separability_train": 0.9993777777777777,
+      "separability_held": 0.7090874999999999,
+      "camouflage": 0.2902902777777778,
+      "camouflage_score": 0.2733501495316768,
+      "camouflage_share": 0.9637885496691138,
+      "synth_drift": 4.13634747103079
+    },
+    {
+      "name": "deep_propagation_fraction",
+      "category": "cascade",
+      "importance": 0.020753381209595294,
+      "separability_train": 0.9969888888888889,
+      "separability_held": 0.8435625,
+      "camouflage": 0.15342638888888893,
+      "camouflage_score": 0.003184116336222728,
+      "camouflage_share": 0.011226680764300112,
+      "synth_drift": 1.6213320500056914
+    },
+    {
+      "name": "direct_reshare_fraction",
+      "category": "cascade",
+      "importance": 0.014591926438162497,
+      "separability_train": 0.9969888888888889,
+      "separability_held": 0.8435625,
+      "camouflage": 0.15342638888888893,
+      "camouflage_score": 0.0022387865803395793,
+      "camouflage_share": 0.007893600479022654,
+      "synth_drift": 1.6213320500056916
+    },
+    {
+      "name": "unique_platform_count",
+      "category": "coordination",
+      "importance": 0.010898955842293001,
+      "separability_train": 0.9266666666666667,
+      "separability_held": 0.7424999999999999,
+      "camouflage": 0.1841666666666668,
+      "camouflage_score": 0.002007224367622296,
+      "camouflage_share": 0.007077149456276465,
+      "synth_drift": 0.97
+    },
+    {
+      "name": "cross_platform_spread",
+      "category": "coordination",
+      "importance": 0.00579338509819092,
+      "separability_train": 0.9266666666666667,
+      "separability_held": 0.7424999999999999,
+      "camouflage": 0.1841666666666668,
+      "camouflage_score": 0.0010669484222501618,
+      "camouflage_share": 0.0037618880919363393,
+      "synth_drift": 0.3683333333333334
+    },
+    {
+      "name": "mean_inter_share_seconds",
+      "category": "temporal",
+      "importance": 0.0026975312965726887,
+      "separability_train": 0.9894861111111111,
+      "separability_held": 0.6341,
+      "camouflage": 0.35538611111111107,
+      "camouflage_score": 0.000958665157089481,
+      "camouflage_share": 0.0033800987596039832,
+      "synth_drift": 1.394065094579827
+    },
+    {
+      "name": "time_to_first_share_seconds",
+      "category": "temporal",
+      "importance": 0.001355440830036348,
+      "separability_train": 0.9518513888888889,
+      "separability_held": 0.6172249999999999,
+      "camouflage": 0.33462638888888896,
+      "camouflage_score": 0.0004535662703076215,
+      "camouflage_share": 0.0015992015317626675,
+      "synth_drift": 1.4593719332875885
+    },
+    {
+      "name": "peak_hour_share_fraction",
+      "category": "temporal",
+      "importance": 0.0022652028965378305,
+      "separability_train": 0.9966055555555555,
+      "separability_held": 0.8372375,
+      "camouflage": 0.15936805555555555,
+      "camouflage_score": 0.00036100098106004634,
+      "camouflage_share": 0.0012728312479838978,
+      "synth_drift": 3.9978245188191814
+    },
+    {
+      "name": "mean_cascade_breadth",
+      "category": "cascade",
+      "importance": 4.2361902416985673e-17,
+      "separability_train": 0.9325222222222224,
+      "separability_held": 0.5936,
+      "camouflage": 0.33892222222222235,
+      "camouflage_score": 1.4357390104725715e-17,
+      "camouflage_share": 5.062184238704338e-17,
+      "synth_drift": 2.8554426449851253
+    },
+    {
+      "name": "burstiness",
+      "category": "temporal",
+      "importance": 8.66878972537262e-18,
+      "separability_train": 0.8524499999999999,
+      "separability_held": 0.5044249999999999,
+      "camouflage": 0.34802500000000003,
+      "camouflage_score": 3.0169555441728064e-18,
+      "camouflage_share": 1.0637298766129065e-17,
+      "synth_drift": 1.3114449778867734
+    },
+    {
+      "name": "follower_following_ratio_mean",
+      "category": "account",
+      "importance": 1.195083279724709e-17,
+      "separability_train": 0.8151444444444444,
+      "separability_held": 0.73385,
+      "camouflage": 0.08129444444444445,
+      "camouflage_score": 9.715363129006482e-19,
+      "camouflage_share": 3.425480379526501e-18,
+      "synth_drift": 0.1686044386872407
+    },
+    {
+      "name": "account_age_clustering",
+      "category": "coordination",
+      "importance": 1.0847146772737112e-18,
+      "separability_train": 0.6819347222222223,
+      "separability_held": 0.57815,
+      "camouflage": 0.10378472222222224,
+      "camouflage_score": 1.1257681147121956e-19,
+      "camouflage_share": 3.969276842910472e-19,
+      "synth_drift": 1.1766751303895446
+    },
+    {
+      "name": "mean_account_age_days",
+      "category": "account",
+      "importance": 9.284800529750285e-19,
+      "separability_train": 0.8835041666666666,
+      "separability_held": 0.8396625,
+      "camouflage": 0.04384166666666667,
+      "camouflage_score": 4.070611298918021e-20,
+      "camouflage_share": 1.4352319055879176e-19,
+      "synth_drift": 1.3461731758115953
+    },
+    {
+      "name": "total_shares",
+      "category": "temporal",
+      "importance": 0.0,
+      "separability_train": 0.7078027777777778,
+      "separability_held": 0.839525,
+      "camouflage": -0.13172222222222219,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": -0.31411231644436277
+    },
+    {
+      "name": "shares_per_hour",
+      "category": "temporal",
+      "importance": 0.0,
+      "separability_train": 0.7078027777777778,
+      "separability_held": 0.839525,
+      "camouflage": -0.13172222222222219,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": -0.3141123164443632
+    },
+    {
+      "name": "inter_share_cv",
+      "category": "temporal",
+      "importance": 0.0,
+      "separability_train": 0.8524499999999999,
+      "separability_held": 0.5044249999999999,
+      "camouflage": 0.34802500000000003,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 2.0995457245459885
+    },
+    {
+      "name": "time_to_peak_hours",
+      "category": "temporal",
+      "importance": 0.0,
+      "separability_train": 0.92215,
+      "separability_held": 0.710575,
+      "camouflage": 0.21157500000000007,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 0.3776890891835911
+    },
+    {
+      "name": "cascade_depth",
+      "category": "cascade",
+      "importance": 0.0,
+      "separability_train": 0.8892166666666667,
+      "separability_held": 0.7994,
+      "camouflage": 0.08981666666666666,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 0.25870683707137476
+    },
+    {
+      "name": "max_cascade_breadth",
+      "category": "cascade",
+      "importance": 0.0,
+      "separability_train": 0.9595986111111111,
+      "separability_held": 0.6086,
+      "camouflage": 0.3509986111111111,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 4.1777408735914126
+    },
+    {
+      "name": "structural_virality",
+      "category": "cascade",
+      "importance": 0.0,
+      "separability_train": 0.9923944444444445,
+      "separability_held": 0.5947875,
+      "camouflage": 0.39760694444444444,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 1.5637715073971001
+    },
+    {
+      "name": "median_account_age_days",
+      "category": "account",
+      "importance": 0.0,
+      "separability_train": 0.88145,
+      "separability_held": 0.860575,
+      "camouflage": 0.020874999999999977,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 1.0803760421467086
+    },
+    {
+      "name": "account_age_cv",
+      "category": "account",
+      "importance": 0.0,
+      "separability_train": 0.6827388888888888,
+      "separability_held": 0.5785,
+      "camouflage": 0.10423888888888877,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 3.552537539169551
+    },
+    {
+      "name": "new_account_fraction",
+      "category": "account",
+      "importance": 0.0,
+      "separability_train": 0.758548611111111,
+      "separability_held": 0.5252249999999999,
+      "camouflage": 0.2333236111111111,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 4.813348707405489
+    },
+    {
+      "name": "mean_follower_count",
+      "category": "account",
+      "importance": 0.0,
+      "separability_train": 0.6461180555555556,
+      "separability_held": 0.8846625,
+      "camouflage": -0.23854444444444445,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 1.586861766227447
+    },
+    {
+      "name": "median_follower_count",
+      "category": "account",
+      "importance": 0.0,
+      "separability_train": 0.6028138888888889,
+      "separability_held": 0.8424625,
+      "camouflage": -0.23964861111111113,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 1.9340754795342314
+    },
+    {
+      "name": "follower_cv",
+      "category": "account",
+      "importance": 0.0,
+      "separability_train": 0.5564583333333333,
+      "separability_held": 0.65035,
+      "camouflage": -0.0938916666666667,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": -0.16858012209899748
+    },
+    {
+      "name": "small_account_fraction",
+      "category": "account",
+      "importance": 0.0,
+      "separability_train": 0.6677125,
+      "separability_held": 0.8985624999999999,
+      "camouflage": -0.2308499999999999,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": -0.7195337678456588
+    },
+    {
+      "name": "verified_fraction",
+      "category": "account",
+      "importance": 0.0,
+      "separability_train": 0.6133638888888888,
+      "separability_held": 0.6057874999999999,
+      "camouflage": 0.007576388888888896,
+      "camouflage_score": 0.0,
+      "camouflage_share": 0.0,
+      "synth_drift": 0.16437518876986568
+    }
+  ],
+  "prune_experiment": {
+    "held_out": "stealth_mimic",
+    "top_k": 4,
+    "pruned_features": [
+      "temporal_clustering",
+      "deep_propagation_fraction",
+      "direct_reshare_fraction",
+      "unique_platform_count"
+    ],
+    "transfer_auc_baseline": 0.821625,
+    "transfer_auc_pruned": 0.7228125,
+    "recovery": -0.09881250000000008,
+    "n_features_before": 28,
+    "n_features_after": 24
+  },
+  "diversify_experiment": {
+    "held_out": "stealth_mimic",
+    "trials": [
+      {
+        "max_features": 1.0,
+        "transfer_auc": 0.821625,
+        "top1_importance": 0.9416441763886114,
+        "herfindahl": 0.8875039776638443
+      },
+      {
+        "max_features": 0.5,
+        "transfer_auc": 0.8801625000000002,
+        "top1_importance": 0.4073655752634736,
+        "herfindahl": 0.2744916182172726
+      },
+      {
+        "max_features": 0.3,
+        "transfer_auc": 0.9389875,
+        "top1_importance": 0.24834534496242439,
+        "herfindahl": 0.17531814199660542
+      },
+      {
+        "max_features": 0.15,
+        "transfer_auc": 0.9365624999999999,
+        "top1_importance": 0.22412390874893218,
+        "herfindahl": 0.13410252705348527
+      }
+    ],
+    "baseline_auc": 0.821625,
+    "baseline_top1_importance": 0.9416441763886114,
+    "best_max_features": 0.3,
+    "best_auc": 0.9389875,
+    "recovery": 0.11736249999999993
+  },
+  "summary": {
+    "top_camouflaged": [
+      "temporal_clustering",
+      "deep_propagation_fraction",
+      "direct_reshare_fraction",
+      "unique_platform_count",
+      "cross_platform_spread"
+    ],
+    "top5_camouflage_share": 0.9937478684606493,
+    "n_features_lost_separability": 19,
+    "baseline_top1_importance": 0.9416441763886114,
+    "pruning_recovery": -0.09881250000000008,
+    "diversify_recovery": 0.11736249999999993,
+    "diagnosis": "monoculture"
+  }
+}

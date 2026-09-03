@@ -7,6 +7,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Transfer-failure diagnostics (`transfer_diagnostics.py`)
+  - Opens the black box on the one regime where cross-generator transfer
+    collapsed (`stealth_mimic`, transfer AUC 0.82). For every feature it
+    measures single-feature *separability* on the seen (training) regimes vs
+    on the unseen regime; the drop is per-feature **camouflage**, and
+    importance-weighting it ranks the mechanistic causes.
+  - **Finding — it's a monoculture, not a few bad features.** The transfer
+    model routes **94% of its importance onto a single feature**
+    (`temporal_clustering`), whose separability drops 0.999 -> 0.709 under the
+    stealth playbook. Two payoff experiments adjudicate the mechanism:
+    - `prune_and_reevaluate`: dropping the top-4 camouflaged features *hurts*
+      transfer (0.82 -> 0.72) — they were still the best-surviving signals.
+    - `diversify_and_reevaluate`: per-split feature subsampling
+      (`max_features=0.3`) breaks the concentration (top-1 importance
+      0.94 -> 0.25) and **recovers transfer AUC 0.82 -> 0.94** (+0.117).
+  - So the adversarial gap is an artefact of the training procedure
+    over-concentrating on one camouflageable signal, not an inherent limit of
+    spread features — and the fix is regularisation toward feature diversity.
+  - Persists `data/transfer_diagnostics_stealth_mimic.json` and renders
+    `figures/transfer_diagnostics_stealth_mimic.(png|pdf)` (per-feature
+    separability collapse, coloured by feature category).
+  - `tests/test_transfer_diagnostics.py`: category-map/schema parity,
+    direction-agnostic single-feature AUC, importance-concentration metrics,
+    diagnostic well-formedness, and the monoculture + diversify>prune result.
 - Cross-generator transfer experiment (`generator_transfer.py`)
   - Defines four distinct coordinated-campaign regimes (`burst_farm`,
     `sleeper_ring`, `broadcast_amplifier`, `stealth_mimic`) as overrides on
