@@ -26,10 +26,32 @@ Synthetic content spreads differently than organic content. By analyzing spread 
 - **Coordination**: temporal clustering, account age clustering, cross-platform signals
 
 ### `classifier.py`
-Multi-layer detector that combines:
+Multi-layer detector (`MultiLayerDetector`) that combines:
 1. Content detector output (any existing deepfake detector)
 2. Spread pattern features
-3. Late fusion for final classification
+3. Late fusion for final classification — `fusion="fixed"` (static weights) or
+   `fusion="adaptive"` (confidence-weighted, so each layer's influence scales
+   with its decisional certainty and defers to the other when uncertain)
+
+### `generator_transfer.py`
+Cross-generator robustness experiment. Defines four coordinated-campaign
+regimes (`burst_farm`, `sleeper_ring`, `broadcast_amplifier`, `stealth_mimic`)
+and runs leave-one-generator-out to test the "robust to generator evolution"
+claim directly. Spread features transfer near-perfectly across timing/account
+playbooks (transfer AUC ~1.0) but drop to 0.82 on the adversarial
+`stealth_mimic` regime — honest support for the claim plus its limit.
+
+### `transfer_diagnostics.py`
+Opens the black box on the `stealth_mimic` collapse. Traces it to feature
+**monoculture** (94% of importance on `temporal_clustering`) rather than a few
+bad features, and shows that per-split feature subsampling breaks the
+concentration and recovers transfer AUC 0.82 → 0.94.
+
+### `ablation.py` / `run_ablation.py`
+End-to-end ablation runner with feature-category and noise-robustness figures.
+
+See `CHANGELOG.md` for the full history. Run the test suite with `pytest`
+(23 tests under `tests/`).
 
 ## Research Context
 
@@ -56,4 +78,4 @@ Research: AI detection & synthetic content
 MIT
 
 ---
-*Last updated: 2026-02-22*
+*Last updated: 2026-09-04*
