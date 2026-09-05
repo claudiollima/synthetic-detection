@@ -184,19 +184,35 @@ def run_category_ablation(
 def leave_one_out_deltas(
     rows: Sequence[SubsetResult], classifier: str = "GradientBoosting"
 ) -> Dict[str, float]:
-    """AUC drop when each category is removed from the full feature set."""
+    """AUC drop when each category is removed from the full feature set.
+
+    Raises:
+        KeyError: If ``rows`` lacks the full-set row or any single-category
+            leave-one-out row for ``classifier``. This happens when a category
+            contributed no features and its subset was skipped in
+            ``run_category_ablation``; surfacing it beats a bare
+            ``StopIteration`` from the underlying ``next`` lookup.
+    """
     cats = set(FEATURE_CATEGORIES.keys())
-    full = next(
-        r for r in rows if r.classifier == classifier and set(r.categories) == cats
-    )
+
+    def _find(target: set[str]) -> SubsetResult:
+        try:
+            return next(
+                r
+                for r in rows
+                if r.classifier == classifier and set(r.categories) == target
+            )
+        except StopIteration:
+            raise KeyError(
+                f"No ablation row for classifier={classifier!r} with "
+                f"categories={sorted(target)}. Ensure run_category_ablation "
+                "was run over the full category set with matching features."
+            ) from None
+
+    full = _find(cats)
     deltas: Dict[str, float] = {}
     for cat in cats:
-        ablated = cats - {cat}
-        match = next(
-            r
-            for r in rows
-            if r.classifier == classifier and set(r.categories) == ablated
-        )
+        match = _find(cats - {cat})
         deltas[cat] = full.auc_mean - match.auc_mean
     return deltas
 

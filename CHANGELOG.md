@@ -7,6 +7,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Test coverage for the feature-category ablation module
+  (`tests/test_ablation.py`, 4 cases): full subset enumeration, column
+  selection when a category has no present features, leave-one-out deltas
+  against a manual recomputation, and the missing-row error path.
+
+### Fixed
+- `leave_one_out_deltas` now raises a descriptive `KeyError` when the full-set
+  or an ablated row is absent for the requested classifier, instead of leaking
+  a bare `StopIteration` from the internal `next()` lookup.
+
+### Added (prior)
 - Transfer-failure diagnostics (`transfer_diagnostics.py`)
   - Opens the black box on the one regime where cross-generator transfer
     collapsed (`stealth_mimic`, transfer AUC 0.82). For every feature it
