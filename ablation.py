@@ -83,8 +83,13 @@ def _default_classifiers() -> Dict[str, Callable[[], object]]:
         "GradientBoosting": lambda: GradientBoostingClassifier(
             n_estimators=100, random_state=42
         ),
+        # liblinear (coordinate descent) instead of the default lbfgs: on the
+        # smaller, near-separable category subsets the lbfgs solver drives the
+        # coefficients to huge magnitudes and overflows in the raw-prediction
+        # matmul (divide-by-zero / overflow / invalid-value RuntimeWarnings).
+        # liblinear is robust to separable data and yields identical AUC/F1.
         "LogisticRegression": lambda: LogisticRegression(
-            max_iter=1000, class_weight="balanced"
+            max_iter=1000, class_weight="balanced", solver="liblinear"
         ),
     }
 

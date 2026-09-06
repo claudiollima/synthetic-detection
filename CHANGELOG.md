@@ -13,6 +13,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   against a manual recomputation, and the missing-row error path.
 
 ### Fixed
+- Ablation's default `LogisticRegression` now uses the `liblinear` solver.
+  On the smaller, near-separable category subsets the previous lbfgs default
+  drove coefficients to huge magnitudes and overflowed in the raw-prediction
+  matmul, emitting a flood of divide-by-zero / overflow / invalid-value
+  `RuntimeWarning`s (432 across a 3-fold run of the toy suite). liblinear is
+  robust to separable data and produces identical AUC/F1 with zero warnings.
 - `leave_one_out_deltas` now raises a descriptive `KeyError` when the full-set
   or an ablated row is absent for the requested classifier, instead of leaking
   a bare `StopIteration` from the internal `next()` lookup.
