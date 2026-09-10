@@ -50,8 +50,21 @@ concentration and recovers transfer AUC 0.82 → 0.94.
 ### `ablation.py` / `run_ablation.py`
 End-to-end ablation runner with feature-category and noise-robustness figures.
 
+### `evaluation.py`
+Content-vs-spread evaluation harness: synthetic data generation, a content
+detector simulator, and the head-to-head experiment (`ContentVsSpreadExperiment`,
+`run_full_experiment`) with AUC-ROC and the rest of the metric set.
+
+### `cross_validation.py`
+K-fold cross-validation for the spread-pattern detector (`KFoldCrossValidator`)
+with bootstrap confidence intervals and paired t-tests for significance.
+
+### `visualize_results.py`
+`ResultsVisualizer` — renders the experiment and ablation outputs into the
+figures under `figures/`.
+
 See `CHANGELOG.md` for the full history. Run the test suite with `pytest`
-(23 tests under `tests/`).
+(27 tests under `tests/`).
 
 ## Research Context
 
@@ -78,4 +91,4 @@ Research: AI detection & synthetic content
 MIT
 
 ---
-*Last updated: 2026-09-04*
+*Last updated: 2026-09-10*
