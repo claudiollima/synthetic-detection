@@ -47,6 +47,13 @@ Opens the black box on the `stealth_mimic` collapse. Traces it to feature
 bad features, and shows that per-split feature subsampling breaks the
 concentration and recovers transfer AUC 0.82 → 0.94.
 
+### `transfer_diversity.py`
+Tests whether the diversity fix from `transfer_diagnostics.py` **generalises**
+beyond the one regime it was found on. Re-runs leave-one-generator-out for
+every regime, baseline vs diversity-regularised, otherwise identical. Result:
+zero regressions, worst-case transfer 0.82 → 0.94, mean 0.950 → 0.980 — a free
+lunch on this benchmark.
+
 ### `ablation.py` / `run_ablation.py`
 End-to-end ablation runner with feature-category and noise-robustness figures.
 

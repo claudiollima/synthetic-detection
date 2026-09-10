@@ -7,6 +7,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Diversity-generalisation experiment (`transfer_diversity.py`)
+  - `transfer_diagnostics.py` showed feature subsampling (`max_features`)
+    recovers cross-generator transfer on the *one* regime where it collapsed
+    (`stealth_mimic`, 0.82 -> 0.94). A fix tuned on the case it was found on is
+    not yet a general claim. This module re-runs the full
+    leave-one-generator-out protocol under two otherwise-identical training
+    procedures — baseline `GradientBoosting(max_features=None)` vs
+    diversity-regularised `GradientBoosting(max_features=0.3)` — for **every**
+    held-out regime, and reports the per-regime transfer delta.
+  - **Finding — the fix generalises, and never at a cost.** Across all four
+    regimes (n=400, seed=42): zero regressions, one large help
+    (`stealth_mimic` +0.117), two ties on the already-saturated regimes, and a
+    +0.003 nudge on `broadcast_amplifier`. Mean transfer AUC 0.950 -> 0.980;
+    worst-case transfer 0.822 -> 0.939. Diversity regularisation is therefore a
+    free lunch on this benchmark: it rescues the adversarial regime without
+    trading away any of the easy ones.
+  - The baseline column reproduces `generator_transfer.py`'s numbers exactly
+    (shared code path, `max_features=None`), so the two experiments are
+    directly comparable and the diversified column is the only moving part.
+  - Persists `data/transfer_diversity_results.json` (per-regime AUC/F1, top-1
+    importance concentration, verdict, and a `generalises` flag) and renders
+    `figures/transfer_diversity.(png|pdf)` (grouped bars, per-regime delta).
+  - `tests/test_transfer_diversity.py` (7 cases): payload well-formedness,
+    baseline-reproduces-standalone-runner parity, monoculture breakdown on
+    `stealth_mimic`, no-regression + worst-case-improves generalisation,
+    summary bookkeeping, and verdict-threshold purity.
 - Test coverage for the feature-category ablation module
   (`tests/test_ablation.py`, 4 cases): full subset enumeration, column
   selection when a category has no present features, leave-one-out deltas
